@@ -1,4 +1,4 @@
-from .Abstract import AbstractDeliveryFactory, AbstractTransport, AbstractPackageRestrictions, AbstractPriceCalculator
+from .Abstract import AbstractDeliveryFactory, AbstractTransport, AbstractPackageRestrictions, AbstractPriceCalculator, BasePriceCalculator
 from typing import Type, Collection, Tuple
 from datetime import timedelta
 
@@ -24,24 +24,13 @@ class TruckPackageRestrictions(AbstractPackageRestrictions):
         return {'Human Body', 'Carpet', 'Human Body In a Carpet'}
 
 
-class TruckPriceCalculator(AbstractPriceCalculator):
+class TruckPriceCalculator(BasePriceCalculator):
     def __init__(self, size: Tuple[int, int, int], weight: int):
-        super().__init__()
-        self._size = size
-        self._volume = size[0] * size[1] * size[2]
-
-        self._weight = weight
-
-        self._insurance = None
+        super().__init__(size, weight)
 
         self._size_policy = 0.1
         self._weight_policy = 0.5
 
-    def add_insurance(self, insurance_policy: 'AbstractInsurancePolicy'):
-        self._insurance = insurance_policy
-
-    def get_price(self):
-        return max(self._size_policy * self._volume, self._weight_policy * self._weight) + self._insurance.get_price()
 
 
 class TruckDeliveryFactory(AbstractDeliveryFactory):

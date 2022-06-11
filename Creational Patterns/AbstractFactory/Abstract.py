@@ -1,4 +1,4 @@
-from abc import ABC, abstractmethod
+from abc import ABC, abstractmethod, ABCMeta
 from typing import Type, Collection, Tuple
 from datetime import timedelta
 
@@ -36,7 +36,7 @@ class AbstractPriceCalculator(ABC):
         pass
 
     @abstractmethod
-    def add_insurance(self, insurance_policy):
+    def add_insurance(self, insurance_policy: 'AbstractInsurancePolicy'):
         pass
 
     @abstractmethod
@@ -57,3 +57,26 @@ class AbstractDeliveryFactory(ABC):
     @abstractmethod
     def get_price_calculator(self) -> Type[AbstractPriceCalculator]:
         pass
+
+
+
+class BasePriceCalculator(AbstractPriceCalculator, metaclass=ABCMeta):
+
+    @abstractmethod
+    def __init__(self, size: Tuple[int, int, int], weight: int):
+        super().__init__()
+        self._size = size
+        self._volume = size[0] * size[1] * size[2]
+
+        self._weight = weight
+
+        self._insurance = None
+
+        self._size_policy: int = 0
+        self._weight_policy: int = 0
+
+    def add_insurance(self, insurance_policy: 'AbstractInsurancePolicy'):
+        self._insurance = insurance_policy
+
+    def get_price(self):
+        return max(self._size_policy * self._volume, self._weight_policy * self._weight) + self._insurance.get_price()

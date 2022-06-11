@@ -1,6 +1,6 @@
 from datetime import timedelta
 
-from .Abstract import AbstractDeliveryFactory, AbstractTransport, AbstractPackageRestrictions, AbstractPriceCalculator
+from .Abstract import AbstractDeliveryFactory, AbstractTransport, AbstractPackageRestrictions, AbstractPriceCalculator, BasePriceCalculator
 from typing import Type, Collection, Tuple
 
 
@@ -26,25 +26,13 @@ class PlanePackageRestrictions(AbstractPackageRestrictions):
         return {'Manicure Scissors', 'Duty Free Scotch'}
 
 
-class PlanePriceCalculator(AbstractPriceCalculator):
+class PlanePriceCalculator(BasePriceCalculator):
 
     def __init__(self, size, weight):
-        super().__init__()
-        self._size = size
-        self._volume = size[0] * size[1] * size[2]
-
-        self._weight = weight
-
-        self._insurance = None
+        super().__init__(size, weight)
 
         self._size_policy = 0.7
         self._weight_policy = 0.9
-
-    def add_insurance(self, insurance_policy: 'AbstractInsurancePolicy'):
-        self._insurance = insurance_policy
-
-    def get_price(self):
-        return max(self._size_policy * self._volume, self._weight_policy * self._weight) + self._insurance.get_price()
 
 
 class PlaneDeliveryFactory(AbstractDeliveryFactory):

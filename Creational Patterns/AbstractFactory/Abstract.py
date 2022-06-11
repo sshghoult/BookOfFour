@@ -15,11 +15,6 @@ class AbstractTransport(ABC):
     def delivery_time(self) -> timedelta:
         pass
 
-    @abstractmethod
-    @property
-    def delivery_price(self) -> int:
-        pass
-
 
 class AbstractPackageRestrictions(ABC):
 

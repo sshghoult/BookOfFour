@@ -13,10 +13,6 @@ class Truck(AbstractTransport):
     def delivery_time(self) -> timedelta:
         return timedelta(days=7)
 
-    @property
-    def delivery_price(self) -> int:
-        return 10 ** 2
-
 
 class TruckPackageRestrictions(AbstractPackageRestrictions):
     @property
@@ -40,7 +36,6 @@ class TruckPriceCalculator(AbstractPriceCalculator):
 
         self._size_policy = 0.1
         self._weight_policy = 0.5
-
 
     def add_insurance(self, insurance_policy: 'AbstractInsurancePolicy'):
         self._insurance = insurance_policy

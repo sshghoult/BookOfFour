@@ -5,26 +5,26 @@ from datetime import timedelta
 
 class AbstractTransport(ABC):
 
-    @abstractmethod
     @property
+    @abstractmethod
     def volume(self) -> int:
         pass
 
-    @abstractmethod
     @property
+    @abstractmethod
     def delivery_time(self) -> timedelta:
         pass
 
 
 class AbstractPackageRestrictions(ABC):
 
-    @abstractmethod
     @property
+    @abstractmethod
     def size(self) -> Tuple[int, int, int]:
         pass
 
-    @abstractmethod
     @property
+    @abstractmethod
     def prohibited_goods(self) -> Collection:
         pass
 
@@ -32,7 +32,7 @@ class AbstractPackageRestrictions(ABC):
 class AbstractPriceCalculator(ABC):
 
     @abstractmethod
-    def __init__(self):
+    def __init__(self, size: Tuple[int, int, int], weight: int):
         pass
 
     @abstractmethod
@@ -59,12 +59,11 @@ class AbstractDeliveryFactory(ABC):
         pass
 
 
-
 class BasePriceCalculator(AbstractPriceCalculator, metaclass=ABCMeta):
 
     @abstractmethod
     def __init__(self, size: Tuple[int, int, int], weight: int):
-        super().__init__()
+        super().__init__(size, weight)
         self._size = size
         self._volume = size[0] * size[1] * size[2]
 
@@ -79,4 +78,9 @@ class BasePriceCalculator(AbstractPriceCalculator, metaclass=ABCMeta):
         self._insurance = insurance_policy
 
     def get_price(self):
-        return max(self._size_policy * self._volume, self._weight_policy * self._weight) + self._insurance.get_price()
+        price = max(self._size_policy * self._volume, self._weight_policy * self._weight)
+
+        if self._insurance is not None:
+            price += self._insurance.get_price()
+
+        return price

@@ -1,6 +1,6 @@
 from datetime import timedelta
 
-from .Abstract import AbstractDeliveryFactory, AbstractTransport, AbstractPackageRestrictions, AbstractPriceCalculator, BasePriceCalculator
+from Abstract import AbstractDeliveryFactory, AbstractTransport, AbstractPackageRestrictions, AbstractPriceCalculator, BasePriceCalculator
 from typing import Type, Collection, Tuple
 
 

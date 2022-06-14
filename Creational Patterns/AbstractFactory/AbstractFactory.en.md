@@ -13,5 +13,5 @@ Our goal is to neatly determine if the package can be sent this way and the cost
 
 ### Why?
 Here we use Abstract Factory to ensure usage of only one class hierarchy in processing of each package 
-and to keep the code clean by avoiding nasty repeated if-else-s by replacing them with choice of factory at the start, which then
- produces necessary objects.
+and to keep the code clean by avoiding nasty repeated if-else-s intended to instantiate object of correct hierarchy by replacing them with
+ choice of factory at the start, which then produces necessary objects.
